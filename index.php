@@ -23,6 +23,10 @@
 </head>
 <body>
     <nav>
+        <h2>Demo</h2>
+        <ul>
+            <li><a href="Demo/algo_demo.php">Demo Algorithmie</a></li>
+        </ul>
         <h2>Exercices</h2>
         <ul>
             <li><a href="Exercices/algo.php">Algorithmie</a></li>
