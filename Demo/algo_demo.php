@@ -43,6 +43,48 @@
                 affichage2($a); // pas de second paramètre, mais affichera Constante + Valeur par Défaut
                 affichage2($a,"Hello World !"); //va afficher Constante + Hello World !
             ?>
+        
+        <h1>Les Conditions</h1>
+        <?php
+            $a = 2;
+            $b = 5;
+            echo "<p>\$a combiné \$b (\$a<=>\$b) donne : ".($a<=>$b)."</p>";
+            echo "<p>si la valeur est -1, alors \$b est supérieur à \$a. Si la valeur est 1, alors \$a est supérieur à \$b. Si la valeur est 0, alors \$a et \$b sont égaux</p>";
+            echo "<p>L'opérateur combiné est très pratique pour mettre en place des Switch...Case, car on n'a que 3 résultats possibles</p>";
+        ?>
+        <h2>Swtich Case</h2>
+        <p>Une petite technique de ninja sur les Switch... Case pour utiliser les comparateur supérieur ou inférieur</p>
+        <?php
+            $a = 2;
+            $b = 3;
+
+            switch(true){
+                case ($a > $b) :
+                    echo "<p>\$a est supérieur \$b</p>";
+                    break;
+                case ($a < $b) :
+                    echo "<p>\$a est inférieur \$b</p>";
+                    break;
+                default :
+                    echo "<p>\$a est égale à \$b</p>";
+            }
+
+            //Par défaut pour le switch
+            switch($a){
+                case 1 : //si $a est égale à 1, on entre dans ce case
+                    echo "<p>Ha ha ha ha, \$a est 1</p>";
+                    break;
+                case 2 : //si $a est égale à 2, on entre dans ce case
+                    echo "<p>Bha, \$a est 2</p>";
+                    break; 
+                case 3 : //si $a est égale à 3, on entre dans ce case
+                    echo "<p>Simplement 3, \$a est 3</p>";
+                    break;
+                default : //Si $a n'est égale ni à 1, ni à 2, ni à 3, on lance le cas par défaut
+                      echo "<p>DEFAULT, \$a est $a</p>";
+                      break;           
+            }
+        ?>
 </main>
 </body>
 </html>
