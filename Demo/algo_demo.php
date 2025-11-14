@@ -172,6 +172,7 @@
             echo "</p>";
 
             //Fonction array_reduce() : effectue un traitement sur un tableau et retourne une valeur unique
+
         ?>
 </main>
 </body>

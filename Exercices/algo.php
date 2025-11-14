@@ -23,6 +23,10 @@
                 <li><a href="#exercice11">Exercice 11</a></li>
                 <li><a href="#exercice12">Exercice 12</a></li>
                 <li><a href="#exercice13">Exercice 13</a></li>
+                <li><a href="#exercice14">Exercice 14</a></li>
+                <li><a href="#exercice15">Exercice 15</a></li>
+                <li><a href="#exercice16">Exercice 16</a></li>
+                <li><a href="#exercice17">Exercice 17</a></li>
             </ul>
         </nav>
     </header>
@@ -335,6 +339,137 @@
             categorieSwitchNinja(30);
         ?>
 
+        <h2 id="exercice15">EXERCICE 15</h2>
+        <?php
+            /*Exercice 15 :
+            Créer une fonction qui affiche la valeur la plus grande du tableau.*/
+            function plusGrandII($tab){
+                
+                $max = $tab[0];
+
+                //Solution avec FOR classique
+                /*for($i = 0; $i<count($tab); $i++){
+                    if($max < $tab[$i]){
+                        $max = $tab[$i];
+                    }
+                }*/
+
+                //Solution avec FOREACH
+                /*foreach($tab as $element){
+                    if($max < $element){
+                        $max = $element;
+                    }
+                }*/
+
+                //Solution avec array_reduce()
+                /*function compareMax($max, $element){
+                    if($max <= $element){
+                        return $element;
+                    }else{
+                        return $max;
+                    }
+                }
+                $max = array_reduce($tab,'compareMax',$tab[0]);*/
+
+                //SOLUTION avec la boucle WHILE
+                $i = 0;
+                while($i<count($tab)){
+                   if($max < $tab[$i]){
+                    $max = $tab[$i];
+                   }
+
+                   $i++;     
+                }
+                return $max;
+            }
+
+            echo "<p>Le nombre le plus grand est : ".plusGrandII([1,2,3,5,4,0,-1])."</p>";
+        ?>
+
+        <h2 id="exercice16">EXERCICE 16</h2>
+        <?php
+            /*Exercice 16 :
+            Créer une fonction qui affiche la moyenne du tableau.*/
+            function moyenne($tab){
+                $moyenne = 0;
+
+                //Solution FOR classique
+                /*for($i = 0; $i < count($tab); $i++){
+                    $moyenne += $tab[$i];
+                }*/
+
+                //Solution avec FOREACH
+                /*foreach($tab as $element){
+                    $moyenne += $element;
+                }*/
+
+                //Solution avec ARRAY_REDUCE
+                /*function somme($moyenne,$element){
+                    $moyenne += $element;
+                    return $moyenne;
+                }
+                $moyenne = array_reduce($tab,'somme',0);*/
+
+                //SOLUTION avec la boucle WHILE
+                $i = 0;
+                while($i<count($tab)){
+                   $moyenne += $tab[$i];
+                   $i++;     
+                }
+
+                return $moyenne / count($tab);
+            }
+
+            echo "<p>La moyenne du tableau est : ".moyenne([1,2,3])."</p>";
+        ?>
+
+        <h2 id="exercice17">EXERCICE 17</h2>
+        <?php
+            /*Exercice 17 :
+            Créer une fonction qui affiche la valeur la plus petite du tableau.*/
+            function plusPetitII($tab){
+                
+                $min = $tab[0];
+
+                //Solution avec FOR classique
+                /*for($i = 0; $i<count($tab); $i++){
+                    if($min > $tab[$i]){
+                        $min = $tab[$i];
+                    }
+                }*/
+
+                //Solution avec FOREACH
+                /*foreach($tab as $element){
+                    if($min > $element){
+                        $min = $element;
+                    }
+                }*/
+
+                //Solution avec array_reduce()
+                /*function compareMin($min, $element){
+                    if($min >= $element){
+                        return $element;
+                    }else{
+                        return $min;
+                    }
+                }
+                $min = array_reduce($tab,'compareMin',$tab[0]);*/
+
+                //SOLUTION avec la boucle WHILE
+                $i = 0;
+                while($i<count($tab)){
+                   if($min > $tab[$i]){
+                    $min = $tab[$i];
+                   }
+                   
+                   $i++;     
+                }
+
+                return $min;
+            }
+
+            echo "<p>Le nombre le plus petit est : ".plusPetitII([1,2,3,5,4,0,-1])."</p>";
+        ?>
     </main>
     <footer>
         <a href="#header" style="position:fixed; bottom:1em; right:1em; background-color:#333; color:#fff; padding:5px">RETOUR EN HAUT</a>
