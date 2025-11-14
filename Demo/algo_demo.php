@@ -85,6 +85,94 @@
                       break;           
             }
         ?>
+
+        <h1>LES TABLEAUX</h1>
+        <h2>Tableaux Indexés</h2>
+        <?php
+            // Création d'un Tableau
+            $tab = [0,1,2,"Hello World"];
+            $tab = array(0,2,3,"Hello World");
+
+            //Afficher le contenu d'un tableau
+            echo "<p> $tab </p>"; // echo ne peut afficher de tableau. Echo ne peut juste pas afficher des valeurs de types complexes (comme les collections : tableau, énumération, objet)
+
+            //A la place, on peut utiliser print_r, et var_dump
+            echo "<p>affichage avec print_r : ";
+            print_r($tab);
+            echo "</p>";
+
+            echo "<p>affichage avec var_dump : ";
+            var_dump($tab);
+            echo "</p>";
+
+            //Ajouter une valeur au tableau
+            array_push($tab,11,"Bonjour le Monde"); // ajoute à la fin
+            echo "<p>";
+            print_r($tab);
+            echo "</p>";
+
+            array_unshift($tab,"Mon début",666); // ajoute au début
+            echo "<p>";
+            print_r($tab);
+            echo "</p>";
+
+            //Supprimer des éléments d'un tableau
+            array_pop($tab); // supprime le dernier élément d'un tableau
+            echo "<p>";
+            print_r($tab);
+            echo "</p>";
+
+            array_shift($tab); // supprime le premier élément d'un tableau
+            echo "<p>";
+            print_r($tab);
+            echo "</p>";
+
+            //Accéder à une valeur de mon tableau
+            echo "<p>$tab[0]</p>";
+
+            //Modifier une valeur de mon tableau
+            $tab[0] = 111;
+            echo "<p>";
+            print_r($tab);
+            echo "</p>";
+
+            //Fonction array_map() : effectue un traitement sur un tableau et retourne un tableau de même taille
+
+            //Exemple : si une case est un nombre, on lui ajoute 1, si c'est une string, on concatène !
+            function callbackTransform($element){
+                if(gettype($element) == "string"){
+                    return $element." !";
+                }
+                if(gettype($element) == "integer" or gettype($element) == "float"){
+                    return $element + 1;
+                }
+            }
+            $result = array_map('callbackTransform',$tab);
+
+            echo "<p> Mon \$tab utilisé dans ma fonction array_map : ";
+            print_r($tab);
+            echo "</p>";
+            echo "<p> Fonction array_map : ";
+            print_r($result);
+            echo "</p>";
+
+            //Fonction array_filter() : effectue un traitement sur un tableau et retourne un tableau de taille inférieur ou égal
+            function callbackTrie($element){ // retourne uniquement les integer
+                if(gettype($element)=='integer'){
+                    return $element;
+                }
+            }
+
+            $result = array_filter($tab,'callbackTrie');
+            echo "<p> Mon \$tab utilisé dans ma fonction array_filter : ";
+            print_r($tab);
+            echo "</p>";
+            echo "<p> Fonction array_filter : ";
+            print_r($result);
+            echo "</p>";
+
+            //Fonction array_reduce() : effectue un traitement sur un tableau et retourne une valeur unique
+        ?>
 </main>
 </body>
 </html>
