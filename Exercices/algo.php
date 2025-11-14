@@ -16,6 +16,9 @@
                 <li><a href="#exercice04">Exercice 04</a></li>
                 <li><a href="#exercice05">Exercice 05</a></li>
                 <li><a href="#exercice06">Exercice 06</a></li>
+                <li><a href="#exercice07">Exercice 07</a></li>
+                <li><a href="#exercice08">Exercice 08</a></li>
+                <li><a href="#exercice09">Exercice 09</a></li>
             </ul>
         </nav>
     </header>
@@ -139,6 +142,38 @@
             <p>bonjour l’adrar</p>*/?>
         <p><?php echo $a." "; ?>l'adrar</p>
             
+        <h2 id="exercice07">EXERCICE 07</h2>
+        <?php
+            /*Exercice 7 :
+            -Créer une fonction qui soustrait à $a la variable $b (2 paramètres en entrée),
+            -la fonction doit renvoyer le résultat de la soustraction $a-$b (return).*/
+            function soustraction($a,$b){
+                return $a-$b;
+            }
+            echo "<p>La soustraction de 10 par 7 est : ".soustraction(10,7)."</p>";
+        ?>
+
+        <h2 id="exercice08">EXERCICE 08</h2>
+        <?php
+            /*Exercice 8 :
+            Créer une fonction qui prend en entrée un nombre à virgule (float),
+            la fonction doit renvoyer l’arrondi (return) du nombre en entrée.*/
+            function arrondie($float){
+                return round($float);
+            }
+            echo "<p>L'arrondi de 15,35 est : ".arrondie(15.35)."</p>";
+            echo "<p>L'arrondi de 17,65 est : ".arrondie(17.65)."</p>";
+        ?>
+
+        <h2 id="exercice09">EXERCICE 09</h2>
+        <?php
+            /*Exercice 9 :
+            Créer une fonction qui prend en entrée 3 valeurs et renvoie la somme des 3 valeurs.*/
+            function addition($a,$b,$c){
+                return $a+$b+$c;
+            }
+            echo "<p>La somme de 1, 2 et 3 donne : ".addition(1,2,3)."</p>";
+        ?>
     </main>
 </body>
 </html>
