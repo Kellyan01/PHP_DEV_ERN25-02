@@ -31,6 +31,7 @@
         <h2>Exercices</h2>
         <ul>
             <li><a href="Exercices/algo.php">Algorithmie</a></li>
+            <li><a href="Exercices/formulaire.php">Formulaire</a></li>
         </ul>
     </nav>
     <h1>Hello World !</h1>
