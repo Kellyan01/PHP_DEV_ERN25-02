@@ -98,6 +98,7 @@
             echo "<p>Affichage de la nouvelle valeur de \$a : $a</p>";
             echo "<p>Affichage de la nouvelle valeur de \$b : $b</p>";
             echo "<p>Affichage de la nouvelle valeur de \$c : $c</p>";
+
         ?>
 
         <h2 id="exercice04">EXERCICE 04</h2>
@@ -469,6 +470,56 @@
             }
 
             echo "<p>Le nombre le plus petit est : ".plusPetitII([1,2,3,5,4,0,-1])."</p>";
+        ?>
+
+        <h2 id="exercice18">EXERCICE 18</h2>
+        <?php
+            /*Exercice 18 :
+            Créer un script qui affiche les nombres de 1 -> 5 (méthode echo).
+            Version FOR et version WHILE */
+            
+            echo "<h3>BOUCLE FOR</h3>";
+            for($i=1; $i <= 5; $i++){
+                echo "<p>$i</p>";
+            }
+
+            echo "<h3>BOUCLE WHILE</h3>";
+            $i=1;
+            while($i <= 5){
+                echo "<p>$i</p>";
+                $i++;
+            }
+        ?>
+
+        <h2 id="exercice19">EXERCICE 19</h2>
+        <?php
+            /*Exercice 19 :
+            Ecrire une fonction qui prend un nombre en paramètre (variable $nbr), et qui ensuite affiche les dix nombres
+            suivants. Par exemple, si la valeur de nbr équivaut à : 17, la fonction affichera les nombres de 18 à 27 (méthode
+            echo).
+            Version FOR et version WHILE*/
+            echo "<h3>BOUCLE FOR</h3>";
+
+            function counterFor($nbr){
+                for($i=1;$i<=10; $i++){
+                    echo "<p>".$nbr+$i."</p>";
+                }
+            }
+
+            counterFor(1);
+
+            echo "<h3>BOUCLE WHILE</h3>";
+
+            function counterWhile($nbr){
+                $i=1;
+                while($i<=10){
+                    echo "<p>".$nbr+$i."</p>";
+                    $i++;
+                }
+            }
+
+            counterWhile(1);
+
         ?>
     </main>
     <footer>
