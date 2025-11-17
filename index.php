@@ -26,6 +26,7 @@
         <h2>Demo</h2>
         <ul>
             <li><a href="Demo/algo_demo.php">Demo Algorithmie</a></li>
+            <li><a href="Demo/formulaire_demo.php">Demo Formulaire</a></li>
         </ul>
         <h2>Exercices</h2>
         <ul>
