@@ -12,6 +12,8 @@
                 <li><a href="../index.php">Accueil</a></li>
                 <li><a href="#exercice20">Exercice 20</a></li>
                 <li><a href="#exercice21">Exercice 21</a></li>
+                <li><a href="#exercice22">Exercice 23</a></li>
+                <li><a href="#exercice23">Exercice 23</a></li>
             </ul>
         </nav>
     </header>
@@ -138,6 +140,116 @@
 
         <ul>
             <?php echo $list ?>
+        </ul>
+
+        <h2 id="exercice23">Exercice 23 : Sécurité</h2>
+        <?php
+            /*Exercice 23 :
+                Créer un formulaire qui va avoir :
+                1 Login
+                1 Email
+                1 Mot de Passe
+                1 Mot de Passe de vérification
+                des checkbox pour des choix de plateforme VOD (Netflix, Prime Video, Disney+, HBO Max, Shadowz)
+
+                1) Mettre en place la sécurité à la réception du formulaire (on a besoin qu'au moins une checkbox soit coché)
+                2) Faire en sorte d'afficher les données sous forme de liste*/
+        
+            //Initialisation des variables d'affichages
+            $erreur = '';
+            $message = '';
+
+            //Traitement du Formulaire
+            //1) Vérifier la réception du formulaire
+            if(isset($_POST['submitInscription'])){
+                //2) Vérifier les champs vides
+                if(!empty($_POST['login']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['passwordVerify']) && !empty($_POST['vods'])){
+                    
+                    //3) Vérifier le format des données
+                    if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+
+                        //BONUS : Vérification de l'intégrité des valeurs de mes checkbox
+                        //Etape 1 : mettre une variable à true
+                        $bool = true;
+                        //Etape 2 : Vérifier chaque checkbox envoyé. Si au moins l'une d'elle ne correspond à aucune valeur attendue, je passe mon booléen à false
+                        foreach($_POST['vods'] as $value){
+                            if($value !== "Netflix" && $value !== "HBO Max" && $value !== "Prime Video" && $value !== "Disney+" ){
+                                $bool = false;
+                            }
+                        }
+
+                        //Etape 3 : je vérifie mon booléen. S'il est True, aucune corruption des valeurs, et donc je passe à la suite. S'il est False, alors il y a eu une manipulation d'au moins une valeur, et donc j'envoie une erreur
+                        if($bool){
+                            //4) Nettoyer les inputs
+                            $login = htmlentities(stripslashes(strip_tags(trim($_POST['login']))));
+                            $email = htmlentities(stripslashes(strip_tags(trim($_POST['email']))));
+                            $password = htmlentities(stripslashes(strip_tags(trim($_POST['password']))));
+                            $passwordVerify = htmlentities(stripslashes(strip_tags(trim($_POST['passwordVerify']))));
+
+                            //Version Foreach
+                            $tabVods = [];
+                            foreach($_POST['vods'] as $value){
+                                array_push($tabVods,htmlentities(stripslashes(strip_tags(trim($value)))));
+                            }
+
+
+                            //Version Array_map
+                            $tabVodsBis = array_map(function($value){
+                                return htmlentities(stripslashes(strip_tags(trim($value))));
+                            },$_POST['vods']);
+
+                            //6) Vérifier les correspondances des 2 mots de passe
+                            if($password === $passwordVerify){
+
+                                //7) Hasher le mot de passe
+                                $password = password_hash($password, PASSWORD_DEFAULT);
+
+                                //8) Affichage
+                                $message = "<li>Login : $login</li>
+                                            <li>Email : $email</li>
+                                            <li>Password : $password</li>
+                                            <li>VODs : ";
+                                foreach($tabVods as $value){
+                                    $message = $message."$value, ";
+                                }
+                                $message = $message."</li>";
+                            
+                            }else{
+                                $erreur = "Vos mots de passe sont différents";
+                            }
+
+                        }else{
+                            $erreur = "Valeur de checkbox inattendue !";
+                        }
+                        
+                    }else{
+                        $erreur = "Email pas au bon format";
+                    }
+
+                }else{
+                    $erreur = "Il manque un truc !";
+                }
+            }
+        ?>
+        <form action="" method="post" style="display:flex; flex-direction:column; width:300px">
+            <label for="login">Login</label><input id="login" type="text" name="login">
+            <label for="email">Email</label><input id="email" type="email" name="email">
+            <label for="password">Password</label><input id="password" type="password" name="password">
+            <label for="passwordVerify">Retappez le Password</label><input id="passwordVerify" type="password" name="passwordVerify">
+            <fieldset>
+                <legend>Vos plateformes de VOD</legend>
+                <input type="checkbox" id="netflix" name="vods[]" value="Netflix"><label for="netfilx">Netflix</label>
+                <input type="checkbox" id="prime" name="vods[]" value="Prime Video"><label for="prime">Prime Video</label>
+                <input type="checkbox" id="disney" name="vods[]" value="Disney+"><label for="disney">Disney+</label>
+                <input type="checkbox" id="hbo" name="vods[]" value="HBO Max"><label for="hbo">HBO Max</label>
+            </fieldset>
+            <input type="submit" name="submitInscription" value="S'inscrire">
+        </form>
+        <p>
+            <?php echo $erreur ?>
+        </p>
+        <ul>
+            <?php echo $message ?>
         </ul>
     </main>
     <footer>

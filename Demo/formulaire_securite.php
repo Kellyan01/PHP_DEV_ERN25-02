@@ -97,7 +97,7 @@ if(isset($_POST['submit'])){
         </nav>
     </header>
     <main>
-        <h1>Formulaire : Sécurisaté de Base</h1>
+        <h1>Formulaire : Sécurité de Base</h1>
         <ul>
             <li>La methode de formulaire la plus "sécurisée" : POST. N'utilisez GET uniquement pour partager des données de manière publique. Exemple : partage d'un lien d'une page spécifique (vidéo youtube, article de blog, ...)</li>
             <li>ETAPE 1 : Vérifier que les champs obligatoires sont remplis lors de la réception du formulaire</li>
