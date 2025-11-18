@@ -28,6 +28,8 @@
             <li><a href="Demo/algo_demo.php">Demo Algorithmie</a></li>
             <li><a href="Demo/formulaire_demo.php">Demo Formulaire</a></li>
             <li><a href="Demo/formulaire_checkbox_demo.php">Demo Formulaire : Checkbox, Radio, Select</a></li>
+            <li><a href="Demo/formulaire_securite.php">Demo Formulaire : Sécurité</a></li>
+        
         </ul>
         <h2>Exercices</h2>
         <ul>
