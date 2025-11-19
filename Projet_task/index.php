@@ -1,4 +1,7 @@
 <?php
+//Démarrer la session
+session_start();
+
 //Initialiser ma variable d'affichage
 $message = '';
 
@@ -100,6 +103,16 @@ if(isset($_POST['signIn'])){
         $message = "Veuillez remplir tous les champs";
     }
 }
+
+//FORMULAIRE
+//Vérifier que l'on reçoit le formulaire d'info
+if(isset($_POST['signUp'])){
+    $_SESSION = [
+        'nickname' => $_POST['nicknameSignUp'],
+        'email' => $_POST['emailSignUp']
+    ];
+}
+print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -114,6 +127,8 @@ if(isset($_POST['signIn'])){
         <nav>
             <ul>
                 <li><a href="../index.php">Accueil General</a></li>
+                <li><a href="./info.php">Vos Infos</a></li>
+                <li><a href="./deco.php">Se Deconnecter</a></li>
             </ul>
         </nav>
     </header>
@@ -129,6 +144,13 @@ if(isset($_POST['signIn'])){
             <input type="submit" name="signIn" value="S'inscrire">
         </form>
         <p> <?php echo $message ?></p>
+
+        <h2>Vos Infos</h2>
+        <form action="" method="post">
+            <label for="nicknameSignUp">Pseudo</label><input type="text" id="nicknameSignUp" name="nicknameSignUp">
+            <label for="emailSignUp">Email</label><input type="text" id="emailSignUp" name="emailSignUp">
+            <input type="submit" name="signUp" value="Se Connecter">
+        </form>
     </main>
     <footer>
 
