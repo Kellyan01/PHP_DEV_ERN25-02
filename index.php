@@ -36,6 +36,10 @@
             <li><a href="Exercices/algo.php">Algorithmie</a></li>
             <li><a href="Exercices/formulaire.php">Formulaire</a></li>
         </ul>
+        <h2>Projet Task</h2>
+        <ul>
+            <li><a href="Projet_task/index.php">Accueil du Projet</a></li>
+        </ul>
     </nav>
     <h1>Hello World !</h1>
     <?php //Ici je peux écrire du PHP (commentaire sur une ligne)

@@ -27,33 +27,65 @@ if(isset($_POST['signIn'])){
                 //Etape 6.1 : Création de l'objet de connexion PDO
                 $bdd = new PDO('mysql:host=localhost;dbname=task','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-                // Try... Catch : nous permet de gérer les erreurs de communication avec la BDD et de requête envoyée à la BDD
+                // => EXERCICE 24
+                //Try...Catch -> D'envoyer une requête SELECT pour récupére les utilisateurs qui possèdent le même pseudo et le même email que ceux entrer
+                $data = [];
                 try{
-                    //ETAPE 6.2 : Vérifier si le Pseudo et l'Email sont disponible. Former la requête à envoyer
-                    $req = $bdd->prepare("INSERT INTO users (nickname_user, email_user, password_user, id_role) VALUES (?,?,?, 2)");
+                    //Prepare
+                    $req = $bdd->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? OR u.email_user = ?');
 
-                    //ETAPE 6.3 : Binding de Paramètre -> relier chaque ? de la requête à une valeur
-                    //1er paramètre : position du ? dans la requête
-                    //2nd paramètre : valeur à insérer dans la requête
-                    //3eme paramètre : format du paramètre (classiquement : STRING ou INT)
+                    //BindParam
                     $req->bindParam(1,$nickname,PDO::PARAM_STR);
                     $req->bindParam(2,$email,PDO::PARAM_STR);
-                    $req->bindParam(3,$password,PDO::PARAM_STR);
 
-                    //Etape 6.3 : Envoyer la requête
+                    //Execute
                     $req->execute();
 
-                    //Etape 6.4 : Récupérer la réponse
+                    //$data = FetchAll
                     $data = $req->fetchAll();
 
-                    //Etape 6.5 : Message de confirmation
-                    $message = "$nickname a été enregistré avec succès !";
-                    
+                    //[TEST] : Ici j'affiche la réponse de la BDD pour TESTER si ma requête fonctionne comme voulu
+                    print_r($data);
 
                 }catch(EXCEPTION $error){
-                    die($error->getMessage());
+                    die($error-getMessage());
                 }
-                
+
+                //Vérification des $data
+                if(empty($data)){
+                    //$data vide -> signifie que nickname et email sont dispo
+                    // Lance le try... catch d'inscription
+                    // Try... Catch : nous permet de gérer les erreurs de communication avec la BDD et de requête envoyée à la BDD
+                    try{
+                        //ETAPE 6.2 : Vérifier si le Pseudo et l'Email sont disponible. Former la requête à envoyer
+                        $req = $bdd->prepare("INSERT INTO users (nickname_user, email_user, password_user, id_role) VALUES (?,?,?, 2)");
+
+                        //ETAPE 6.3 : Binding de Paramètre -> relier chaque ? de la requête à une valeur
+                        //1er paramètre : position du ? dans la requête
+                        //2nd paramètre : valeur à insérer dans la requête
+                        //3eme paramètre : format du paramètre (classiquement : STRING ou INT)
+                        $req->bindParam(1,$nickname,PDO::PARAM_STR);
+                        $req->bindParam(2,$email,PDO::PARAM_STR);
+                        $req->bindParam(3,$password,PDO::PARAM_STR);
+
+                        //Etape 6.3 : Envoyer la requête
+                        $req->execute();
+
+                        //Etape 6.4 : Récupérer la réponse
+                        $data = $req->fetchAll();
+
+                        //Etape 6.5 : Message de confirmation
+                        $message = "$nickname a été enregistré avec succès !";
+                        
+
+                    }catch(EXCEPTION $error){
+                        die($error->getMessage());
+                    }
+                }else{
+                    //$data non vide -> signifie que nickname OU email indispo
+                    //message d'erreur
+                    $message = 'Pseudo ou Email indisponible.';
+                }
                 
 
             }else{
