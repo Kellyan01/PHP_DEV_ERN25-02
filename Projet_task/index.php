@@ -98,6 +98,7 @@ if(isset($_POST['signUp'])){
             if(password_verify($password, $data['password_user'])){
                 //Je connecte l'utilisateur en remplissant la superglobal $_SESSION
                 $_SESSION = [
+                        'id' => $data['id_user'],
                         'nickname' => $data['nickname_user'],
                         'email' => $data['email_user'],
                         'role' => $data['role']

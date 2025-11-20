@@ -1,19 +1,33 @@
 <?php
 //Démarer la Session
 session_start();
+
+//IMPORT DE RESSOURCE
+include './Model/model_user.php';
+
+//Variable d'affichage
 $title = 'Mon Compte Utilisateur';
 
+//TRAITEMENT DU FORMULAIRE DE MISE A JOUR
+if(isset($_POST['update'])){
+    $firstname = '';
+    $lastname = '';
+    if(!empty($_POST['firstname'])){
+        $firstname = htmlentities(stripslashes(strip_tags(trim($_POST['firstname']))));
+    }
+    if(!empty($_POST['lastname'])){
+        $lastname = htmlentities(stripslashes(strip_tags(trim($_POST['lastname']))));
+    }
+
+    //Création de l'objet de connexion
+    $bdd = new PDO('mysql:host=localhost;dbname=task','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+
+    updateUser($bdd,$firstname,$lastname,$_SESSION['id']);
+}
+
 include './View/header.php';
-?>
 
-
-        <h1>Voici Vos Infos</h1>
-        <p>Pseudo : <?php echo $_SESSION['nickname'] ?> </p>
-        <p>Email : <?php echo $_SESSION['email'] ?> </p>
-        <p>Role : <?php echo $_SESSION['role'] ?> </p>
-        
-
-<?php
+include './View/view_compte.php';
 
 include './View/footer.php';
 
