@@ -26,6 +26,7 @@ print_r($_SESSION);
         <h1>Voici Vos Infos</h1>
         <p>Pseudo : <?php echo $_SESSION['nickname'] ?> </p>
         <p>Email : <?php echo $_SESSION['email'] ?> </p>
+        <p>Role : <?php echo $_SESSION['role'] ?> </p>
         
     </main>
     <footer>

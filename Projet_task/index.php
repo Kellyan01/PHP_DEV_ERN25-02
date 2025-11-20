@@ -4,6 +4,7 @@ session_start();
 
 //Initialiser ma variable d'affichage
 $message = '';
+$messageCo = '';
 
 //FROMULAIRE INSCRIPTION
 //Vérifier que l'on reçoit le formulaire d'inscription
@@ -48,6 +49,7 @@ if(isset($_POST['signIn'])){
                     $data = $req->fetchAll();
 
                     //[TEST] : Ici j'affiche la réponse de la BDD pour TESTER si ma requête fonctionne comme voulu
+                    echo "Print_r(\$data) pour savoir ce qu'il y a dedans </br>";
                     print_r($data);
 
                 }catch(EXCEPTION $error){
@@ -105,12 +107,68 @@ if(isset($_POST['signIn'])){
 }
 
 //FORMULAIRE
-//Vérifier que l'on reçoit le formulaire d'info
+//Vérifier que l'on reçoit le formulaire de Connexion
 if(isset($_POST['signUp'])){
-    $_SESSION = [
-        'nickname' => $_POST['nicknameSignUp'],
-        'email' => $_POST['emailSignUp']
-    ];
+    //Etape de Sécurité 1 : Vérifier les champs vides
+    if(!empty($_POST['nicknameSignUp']) && !empty($_POST['passwordSignUp'])){
+        //Etape de Sécurité 2 : Vérifier le Format -> aucun format à vérifier ici sauf utilisé une Regex
+        //Etape de Sécurité 3 : Nettoyage des données
+        $nickname = htmlentities(stripslashes(strip_tags(trim($_POST['nicknameSignUp']))));
+        $password = htmlentities(stripslashes(strip_tags(trim($_POST['passwordSignUp']))));
+
+        //Créer l'objet de connexion PDO
+        $bdd = new PDO('mysql:host=localhost;dbname=task','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+
+        //Try...catch pour communiquer avec la BDD :
+        $data = [];
+        try{
+            //Préparer la requête à envoyer
+            $req = $bdd->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? LIMIT 1');
+
+            //Binding de Paramètre
+            $req->bindParam(1,$nickname,PDO::PARAM_STR);
+
+            //Exécuter la requête
+            $req->execute();
+
+            //Récupérer la réponse de la BDD
+            $data = $req->fetch();
+
+        }catch(EXCEPTION $error){
+            die($error->getMessage());
+        }
+
+        echo "Print_r(\$data) pour savoir ce qu'il y a dedans </br>";
+        print_r($data);
+
+        if(!empty($data)){
+            //$data non vide, donc je reçois le compte de l'utilisateur
+            //Vérifier la correspondancedes mots de psse : password_verify()
+            if(password_verify($password, $data['password_user'])){
+                //Je connecte l'utilisateur en remplissant la superglobal $_SESSION
+                $_SESSION = [
+                        'nickname' => $data['nickname_user'],
+                        'email' => $data['email_user'],
+                        'role' => $data['role']
+                ];
+
+                //J'affiche le message de confirmation
+                $messageCo = "{$_SESSION['nickname']} est connecté";
+
+            }else{
+                $messageCo = "Problème de Login et/ou Mot de Passe";
+            }
+        }else{
+            //$data vide -> l'utilisateur n'existe pas -> message d'erreur
+            $messageCo = "Problème de Login et/ou Mot de Passe";
+        }
+
+        
+
+    }else{
+        $messageCo = "Veuillez remplir tous les champs !";
+    }
+
 }
 print_r($_SESSION);
 ?>
@@ -134,6 +192,12 @@ print_r($_SESSION);
     </header>
     <main>
         <h1>Bienvenue sur le Projet Task</h1>
+<?php
+        //Exemple d'affichage dynamique selon qu'un utilisateur est connecté ou non
+        //Je vérifier la $_SESSION
+        //Si elle n'existe pas, alors l'utilisateur n'est pas connecté et j'affiche avec du HTML avec un echo
+        if(!isset($_SESSION['role'])){
+            echo'
 
         <h2>Inscription Utilisateur</h2>
         <form action="" method="post">
@@ -141,16 +205,30 @@ print_r($_SESSION);
             <label for="email">Email</label><input type="text" id="email" name="email">
             <label for="password">Mot de Passe</label><input type="text" id="password" name="password">
             <label for="passwordVerify">Retappez le Mot de Passe</label><input type="text" id="passwordVerify" name="passwordVerify">
-            <input type="submit" name="signIn" value="S'inscrire">
+            <input type="submit" name="signIn" value="S\'inscrire">
         </form>
-        <p> <?php echo $message ?></p>
+            
+        <p>'.$message.'</p>
 
-        <h2>Vos Infos</h2>
+        <h2>Connexion Utilisateur</h2>
         <form action="" method="post">
             <label for="nicknameSignUp">Pseudo</label><input type="text" id="nicknameSignUp" name="nicknameSignUp">
-            <label for="emailSignUp">Email</label><input type="text" id="emailSignUp" name="emailSignUp">
+            <label for="passwordSignUp">Password</label><input type="text" id="passwordSignUp" name="passwordSignUp">
             <input type="submit" name="signUp" value="Se Connecter">
         </form>
+        <p>'.$messageCo.'</p>';
+
+        }else{ //Sinon, l'utilisateur est connecté, et j'affiche un autre HTML avec un echo
+            echo "
+                <h2>Bienvenue {$_SESSION['nickname']}</h2>
+                <p>Pseudo : {$_SESSION['nickname']} </p>
+                <p>Email : {$_SESSION['email']} </p>
+                <p>Role : {$_SESSION['role']} </p>
+            ";
+        }
+?>
+
+
     </main>
     <footer>
 
