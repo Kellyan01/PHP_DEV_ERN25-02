@@ -2,7 +2,11 @@
 //Démarrer la session
 session_start();
 
+//IMPORT DE RESSOURCE
+include './Model/model_user.php';
+
 //Initialiser ma variable d'affichage
+$title = 'accueil TODO LIST';
 $message = '';
 $messageCo = '';
 
@@ -33,59 +37,22 @@ if(isset($_POST['signIn'])){
 
                 // => EXERCICE 24
                 //Try...Catch -> D'envoyer une requête SELECT pour récupére les utilisateurs qui possèdent le même pseudo et le même email que ceux entrer
-                $data = [];
-                try{
-                    //Prepare
-                    $req = $bdd->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? OR u.email_user = ?');
-
-                    //BindParam
-                    $req->bindParam(1,$nickname,PDO::PARAM_STR);
-                    $req->bindParam(2,$email,PDO::PARAM_STR);
-
-                    //Execute
-                    $req->execute();
-
-                    //$data = FetchAll
-                    $data = $req->fetchAll();
-
-                    //[TEST] : Ici j'affiche la réponse de la BDD pour TESTER si ma requête fonctionne comme voulu
-                    echo "Print_r(\$data) pour savoir ce qu'il y a dedans </br>";
-                    print_r($data);
-
-                }catch(EXCEPTION $error){
-                    die($error-getMessage());
-                }
+                $data = readUserByNicknameAndEmail($bdd, $nickname,$email);
 
                 //Vérification des $data
                 if(empty($data)){
                     //$data vide -> signifie que nickname et email sont dispo
                     // Lance le try... catch d'inscription
                     // Try... Catch : nous permet de gérer les erreurs de communication avec la BDD et de requête envoyée à la BDD
-                    try{
-                        //ETAPE 6.2 : Vérifier si le Pseudo et l'Email sont disponible. Former la requête à envoyer
-                        $req = $bdd->prepare("INSERT INTO users (nickname_user, email_user, password_user, id_role) VALUES (?,?,?, 2)");
+                    $data = createUser($bdd,$nickname,$email,$password);
 
-                        //ETAPE 6.3 : Binding de Paramètre -> relier chaque ? de la requête à une valeur
-                        //1er paramètre : position du ? dans la requête
-                        //2nd paramètre : valeur à insérer dans la requête
-                        //3eme paramètre : format du paramètre (classiquement : STRING ou INT)
-                        $req->bindParam(1,$nickname,PDO::PARAM_STR);
-                        $req->bindParam(2,$email,PDO::PARAM_STR);
-                        $req->bindParam(3,$password,PDO::PARAM_STR);
+                    //$data = [
+                    //          '$data' => [tab de reponse de la bdd],
+                    //          'message' => 'message créer dans la fonction create'
+                    //         ]
 
-                        //Etape 6.3 : Envoyer la requête
-                        $req->execute();
-
-                        //Etape 6.4 : Récupérer la réponse
-                        $data = $req->fetchAll();
-
-                        //Etape 6.5 : Message de confirmation
-                        $message = "$nickname a été enregistré avec succès !";
-                        
-
-                    }catch(EXCEPTION $error){
-                        die($error->getMessage());
-                    }
+                    //Affichage du message de confirmation
+                    $message = $data['message'];
                 }else{
                     //$data non vide -> signifie que nickname OU email indispo
                     //message d'erreur
@@ -120,23 +87,7 @@ if(isset($_POST['signUp'])){
         $bdd = new PDO('mysql:host=localhost;dbname=task','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
         //Try...catch pour communiquer avec la BDD :
-        $data = [];
-        try{
-            //Préparer la requête à envoyer
-            $req = $bdd->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? LIMIT 1');
-
-            //Binding de Paramètre
-            $req->bindParam(1,$nickname,PDO::PARAM_STR);
-
-            //Exécuter la requête
-            $req->execute();
-
-            //Récupérer la réponse de la BDD
-            $data = $req->fetch();
-
-        }catch(EXCEPTION $error){
-            die($error->getMessage());
-        }
+        $data = readUserByNickname($bdd,$nickname);
 
         echo "Print_r(\$data) pour savoir ce qu'il y a dedans </br>";
         print_r($data);
@@ -170,68 +121,11 @@ if(isset($_POST['signUp'])){
     }
 
 }
-print_r($_SESSION);
+
+
+include './View/header.php';
+
+include './View/view_accueil.php';
+        
+include './View/footer.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="../index.php">Accueil General</a></li>
-                <li><a href="./info.php">Vos Infos</a></li>
-                <li><a href="./deco.php">Se Deconnecter</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <h1>Bienvenue sur le Projet Task</h1>
-<?php
-        //Exemple d'affichage dynamique selon qu'un utilisateur est connecté ou non
-        //Je vérifier la $_SESSION
-        //Si elle n'existe pas, alors l'utilisateur n'est pas connecté et j'affiche avec du HTML avec un echo
-        if(!isset($_SESSION['role'])){
-            echo'
-
-        <h2>Inscription Utilisateur</h2>
-        <form action="" method="post">
-            <label for="nickname">Pseudo</label><input type="text" id="nickname" name="nickname">
-            <label for="email">Email</label><input type="text" id="email" name="email">
-            <label for="password">Mot de Passe</label><input type="text" id="password" name="password">
-            <label for="passwordVerify">Retappez le Mot de Passe</label><input type="text" id="passwordVerify" name="passwordVerify">
-            <input type="submit" name="signIn" value="S\'inscrire">
-        </form>
-            
-        <p>'.$message.'</p>
-
-        <h2>Connexion Utilisateur</h2>
-        <form action="" method="post">
-            <label for="nicknameSignUp">Pseudo</label><input type="text" id="nicknameSignUp" name="nicknameSignUp">
-            <label for="passwordSignUp">Password</label><input type="text" id="passwordSignUp" name="passwordSignUp">
-            <input type="submit" name="signUp" value="Se Connecter">
-        </form>
-        <p>'.$messageCo.'</p>';
-
-        }else{ //Sinon, l'utilisateur est connecté, et j'affiche un autre HTML avec un echo
-            echo "
-                <h2>Bienvenue {$_SESSION['nickname']}</h2>
-                <p>Pseudo : {$_SESSION['nickname']} </p>
-                <p>Email : {$_SESSION['email']} </p>
-                <p>Role : {$_SESSION['role']} </p>
-            ";
-        }
-?>
-
-
-    </main>
-    <footer>
-
-    </footer>
-</body>
-</html>
