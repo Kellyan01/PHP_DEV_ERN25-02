@@ -16,6 +16,7 @@
                 <?php 
                     switch($title){
                         case 'Mon Compte Utilisateur' :
+                        case 'Mes ToDoes' :
                             echo "<li><a href='./index.php'>Accueil TODO LIST</a></li>";
                             break;
                         case 'accueil TODO LIST' :
@@ -24,6 +25,7 @@
                     }
 
                     if(isset($_SESSION['nickname'])){
+                        echo "<li><a href='./task.php'>My ToDoes</a></li>";
                         echo "<li><a href='./deco.php'>Se Deconnecter</a></li>";
                     }
                 ?>
