@@ -3,10 +3,11 @@
 session_start();
 
 //IMPORT DE RESSOURCE
-include './Model/model_user.php';
+include './Model/UsersModel.php';
 
 //Initialiser ma variable d'affichage
 $title = 'accueil TODO LIST';
+$style='./src/style/style-accueil.css';
 $message = '';
 $messageCo = '';
 
@@ -86,8 +87,9 @@ if(isset($_POST['signUp'])){
         //Créer l'objet de connexion PDO
         $bdd = new PDO('mysql:host=localhost;dbname=task','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-        //Try...catch pour communiquer avec la BDD :
-        $data = readUserByNickname($bdd,$nickname);
+        //Création d'un objet Users pour communiquer avec la BDD :
+        $user = new Users($bdd,$nickname);
+        $data = $user->readUserByNickname();
 
         echo "Print_r(\$data) pour savoir ce qu'il y a dedans </br>";
         print_r($data);

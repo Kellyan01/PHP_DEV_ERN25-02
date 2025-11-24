@@ -3,10 +3,11 @@
 session_start();
 
 //IMPORT DE RESSOURCE
-include './Model/model_user.php';
+include './Model/UsersModel.php';
 
 //Variable d'affichage
 $title = 'Mon Compte Utilisateur';
+$style='./src/style/style-info.css';
 
 //TRAITEMENT DU FORMULAIRE DE MISE A JOUR
 if(isset($_POST['update'])){
