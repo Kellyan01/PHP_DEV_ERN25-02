@@ -37,10 +37,14 @@ if(isset($_POST['update'])){
 }
 
 include './View/header.php';
+$header = new Header();
+echo $header->setTitle($title)->setStyle($style)->renderHeader();
 
 include './View/view_compte.php';
 
 include './View/footer.php';
+$footer = new Footer();
+echo $footer->renderFooter();
 
 ?>
 

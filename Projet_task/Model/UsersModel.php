@@ -48,7 +48,7 @@ class Users {
 
     //METHOD
     //Mes méthodes n'ont plus besoin de paramètre. En effet, elles vont chercher les données nécessaires directement au sein de l'objet avec les Getter
-    public function readUserByNickname(){
+    public function readUserByNickname():array{
         try{
                 //Préparer la requête à envoyer
                 // ici $this->getBDD() me permet de récupérer l'objet de connexion PDO conserver dans l'objet user
@@ -72,7 +72,7 @@ class Users {
             }
     }
     
-    public function readUserByNicknameAndEmail(){
+    public function readUserByNicknameAndEmail():array{
         try{
                         //Prepare
                         $req = $this->getBDD()->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? OR u.email_user = ?');
@@ -100,7 +100,7 @@ class Users {
                     }
     }
 
-    public function createUser(){
+    public function createUser():array{
         try{
                             //ETAPE 6.2 : Vérifier si le Pseudo et l'Email sont disponible. Former la requête à envoyer
                             $req = $this->getBDD()->prepare("INSERT INTO users (nickname_user, email_user, password_user, id_role) VALUES (?,?,?, 2)");
@@ -133,7 +133,7 @@ class Users {
                         }
     }
 
-    public function updateUser(){
+    public function updateUser():string{
         //Try Catch pour requête de Mise à jour
         try{
             //Requête préparée
@@ -159,7 +159,6 @@ class Users {
             die($error->getMessage());
         }
     }
-
     
 }
 
