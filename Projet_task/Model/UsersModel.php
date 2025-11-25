@@ -11,10 +11,8 @@ class Users {
     private ?PDO $bdd;
 
     //CONSTRUCTEUR
-    public function __construct(?PDO $bdd,?string $nickname = '',?string $email =''){
+    public function __construct(?PDO $bdd){
         $this->bdd = $bdd;
-        $this->nickname = $nickname;
-        $this->$email = $email;
     }
 
     //GETTER ET SETTER
@@ -74,11 +72,13 @@ class Users {
             }
     }
     
-    public function readUserByNicknameAndEmail($bdd, $nickname, $email){
+    public function readUserByNicknameAndEmail(){
         try{
                         //Prepare
-                        $req = $bdd->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? OR u.email_user = ?');
+                        $req = $this->getBDD()->prepare('SELECT u.id_user, u.nickname_user, u.email_user, u.firstname_user, u.lastname_user, u.password_user, r.id_role, r.`role` FROM users u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.nickname_user = ? OR u.email_user = ?');
 
+                        $nickname = $this->getNickname();
+                        $email = $this->getEmail();
                         //BindParam
                         $req->bindParam(1,$nickname,PDO::PARAM_STR);
                         $req->bindParam(2,$email,PDO::PARAM_STR);
@@ -100,10 +100,14 @@ class Users {
                     }
     }
 
-    public function createUser($bdd,$nickname,$email,$password){
+    public function createUser(){
         try{
                             //ETAPE 6.2 : Vérifier si le Pseudo et l'Email sont disponible. Former la requête à envoyer
-                            $req = $bdd->prepare("INSERT INTO users (nickname_user, email_user, password_user, id_role) VALUES (?,?,?, 2)");
+                            $req = $this->getBDD()->prepare("INSERT INTO users (nickname_user, email_user, password_user, id_role) VALUES (?,?,?, 2)");
+
+                            $nickname = $this->getNickname();
+                            $email = $this->getEmail();
+                            $password = $this->getPassword();
 
                             //ETAPE 6.3 : Binding de Paramètre -> relier chaque ? de la requête à une valeur
                             //1er paramètre : position du ? dans la requête
@@ -129,11 +133,16 @@ class Users {
                         }
     }
 
-    public function updateUser($bdd,$firstname,$lastname,$id){
+    public function updateUser(){
         //Try Catch pour requête de Mise à jour
         try{
             //Requête préparée
-            $req = $bdd->prepare('UPDATE users SET firstname_user = ?, lastname_user = ? WHERE id_user = ?');
+            $req = $this->getBDD()->prepare('UPDATE users SET firstname_user = ?, lastname_user = ? WHERE id_user = ?');
+
+            //Je récupère depuis l'objet les données à mettre à jour 
+            $firstname = $this->getFirstname();
+            $lastname = $this->getLastname();
+            $id = $this->getIdUser();
 
             //Binding de Paramètre
             $req->bindParam(1,$firstname,PDO::PARAM_STR);

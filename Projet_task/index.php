@@ -38,14 +38,18 @@ if(isset($_POST['signIn'])){
 
                 // => EXERCICE 24
                 //Try...Catch -> D'envoyer une requête SELECT pour récupére les utilisateurs qui possèdent le même pseudo et le même email que ceux entrer
-                $data = readUserByNicknameAndEmail($bdd, $nickname,$email);
+                $user = new Users($bdd);
+                $user->setPassword($password)
+                    ->setNickname($nickname)
+                    ->setEmail($email);
+                $data = $user->readUserByNicknameAndEmail();
 
                 //Vérification des $data
                 if(empty($data)){
                     //$data vide -> signifie que nickname et email sont dispo
                     // Lance le try... catch d'inscription
                     // Try... Catch : nous permet de gérer les erreurs de communication avec la BDD et de requête envoyée à la BDD
-                    $data = createUser($bdd,$nickname,$email,$password);
+                    $data = $user->createUser();
 
                     //$data = [
                     //          '$data' => [tab de reponse de la bdd],
@@ -88,7 +92,8 @@ if(isset($_POST['signUp'])){
         $bdd = new PDO('mysql:host=localhost;dbname=task','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
         //Création d'un objet Users pour communiquer avec la BDD :
-        $user = new Users($bdd,$nickname);
+        $user = new Users($bdd);
+        $user->setNickname($nickname);
         $data = $user->readUserByNickname();
 
         echo "Print_r(\$data) pour savoir ce qu'il y a dedans </br>";
