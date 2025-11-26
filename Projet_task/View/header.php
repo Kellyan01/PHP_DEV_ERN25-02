@@ -35,16 +35,16 @@ class Header {
         switch($this->getTitle()){
             case 'Mon Compte Utilisateur' :
             case 'Mes ToDoes' :
-                $link = "<li><a href='./index.php'>Accueil TODO LIST</a></li>";
+                $link = "<li><a href='/projet_php/Projet_task/accueil'>Accueil TODO LIST</a></li>";
                 break;
             case 'accueil TODO LIST' :
-                $link = "<li><a href='./info.php'>Vos Infos</a></li>";
+                $link = "<li><a href='/projet_php/Projet_task/moncompte'>Vos Infos</a></li>";
                 break;
         }
 
         if(isset($_SESSION['nickname'])){
-            $linkSession= "<li><a href='./task.php'>My ToDoes</a></li>
-                        <li><a href='./deco.php'>Se Deconnecter</a></li>";
+            $linkSession= "<li><a href='/projet_php/Projet_task/mytodoes'>My ToDoes</a></li>
+                        <li><a href='/projet_php/Projet_task/deco'>Se Deconnecter</a></li>";
         }
 
         if(isset($_SESSION['nickname'])){

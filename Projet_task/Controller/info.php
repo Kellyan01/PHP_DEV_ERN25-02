@@ -1,14 +1,4 @@
 <?php
-//Démarer la Session
-session_start();
-
-//IMPORT DE RESSOURCE
-include './Model/UsersModel.php';
-include './utils/functions.php';
-include './View/header.php';
-include './View/view_compte.php';
-include './View/footer.php';
-
 class InfoController{
     //ATTRIBUTS
     private string $title = 'Mon Compte Utilisateur';
@@ -53,7 +43,7 @@ class InfoController{
     public function isConnected():void{
         //VERIFIER SI LA PERSONNE EST CONNECTE, SINON ON REDIRIGE VERS ACCUEIL
         if(!isset($_SESSION['id'])){
-            header('Location:./index.php');
+            header('Location:/projet_php/Projet_task/accueil');
         }
     }
 
@@ -99,9 +89,6 @@ class InfoController{
         echo $this->getFooter()->renderFooter();
     }
 }
-
-$info = new InfoController();
-$info->displayInfo();
 
 
 

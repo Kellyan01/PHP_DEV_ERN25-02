@@ -1,12 +1,4 @@
 <?php
-//Démarrage de la Session
-session_start();
-
-//Importer les Ressources
-include './Model/TaskModel.php';
-include './Model/CategoryModel.php';
-include './utils/functions.php';
-
 //Initialisation des variables d'affichages
 $title = "Mes ToDoes";
 $style = "./src/style/style-todo.css";
@@ -86,12 +78,10 @@ foreach($data as $task){
 }
 
 //Affichage de la vue
-include './View/header.php';
-$header = new Header();
-echo $header->setTitle($title)->setStyle($style)->renderHeader();
+    $header = new Header();
+    echo $header->setTitle($title)->setStyle($style)->renderHeader();
 
-include './View/view_task.php';
+    include './View/view_task.php';
 
-include './View/footer.php';
-$footer = new Footer();
-echo $footer->renderFooter();
+    $footer = new Footer();
+    echo $footer->renderFooter();
