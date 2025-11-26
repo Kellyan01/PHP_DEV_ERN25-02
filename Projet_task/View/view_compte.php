@@ -18,6 +18,7 @@ class InfoView{
         return $this;
     }
 
+    //METHOD
     public function renderInfo(){
         return '<h1>Voici Vos Infos</h1>
             <p>Pseudo : '.$_SESSION['nickname'].'</p>

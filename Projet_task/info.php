@@ -89,8 +89,13 @@ class InfoController{
         $this->updateUser();
 
         //Affichage des Views
+        //Affichage du Header
         echo $this->getHeader()->setTitle($this->getTitle())->setStyle($this->getStyle())->renderHeader();
+
+        //Affichage du contenu de la page info
         echo $this->getInfo()->setMessage($this->getMessage())->renderInfo();
+
+        //Affichage du footer
         echo $this->getFooter()->renderFooter();
     }
 }
